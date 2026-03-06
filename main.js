@@ -49,7 +49,7 @@ function draw() {
   const sidebarHTML =
     current === null
       ? `
-      <div id="sidebar-img" style="flex:0 0 38vw; overflow:hidden; background:#111;">
+      <div id="sidebar-img" style="flex:0 0 38vw; overflow:hidden; background:#111; padding-top:13px;">
         <img src="images/sunset.jpg" style="width:100%; height:100%; object-fit:contain; object-position:center top; display:block;">
       </div>`
       : "";

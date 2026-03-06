@@ -194,11 +194,20 @@ a {
   opacity: 0;
 }
 
+/* ── Body copy link hover ── */
+.body-copy a {
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.body-copy a:hover {
+  color: #c8beb4;
+}
+
 /* ── Body copy ── */
 .body-copy {
-  font-size: 2.4vw;
-  line-height: 1.5;
-  letter-spacing: -2px;
+  font-size: 1.8vw;
+  line-height: 1.6;
+  letter-spacing: -0.5px;
   font-weight: 300;
 }
 

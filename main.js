@@ -1,6 +1,11 @@
 /* ─────────── Navigation ─────────── */
 const ITEMS = ["about", "projects", "work", "contact"];
-const LABELS = { about: "About", projects: "Projects", work: "Experience", contact: "Contact" };
+const LABELS = {
+  about: "About",
+  projects: "Projects",
+  work: "Experience",
+  contact: "Contact",
+};
 let current = null;
 
 function go(id) {
@@ -41,24 +46,33 @@ function draw() {
     }
   }
 
+  const sidebarHTML =
+    current === null
+      ? `
+      <div id="sidebar-img" style="flex:0 0 38vw; overflow:hidden; background:#111;">
+        <img src="images/sunset.jpg" style="width:100%; height:100%; object-fit:contain; object-position:center top; display:block;">
+      </div>`
+      : "";
+
   const h = `
     <div style="display:flex; gap:24px; align-items:flex-start;">
       <div style="flex:1; min-width:0;">${left}</div>
-      <div id="sidebar-img" style="flex:0 0 38vw; overflow:hidden; background:#111;">
-        <img src="images/sunset.jpg" style="width:100%; height:100%; object-fit:contain; object-position:center top; display:block;">
-      </div>
+      ${sidebarHTML}
     </div>`;
 
   document.getElementById("page").innerHTML = h;
 
   // Size image to span exactly from top of page to bottom of last nav item
   const sidebar = document.getElementById("sidebar-img");
-  const leftCol = sidebar.previousElementSibling;
-  const navItems = leftCol.querySelectorAll("a.big");
-  if (sidebar && navItems.length > 0) {
-    const topY = leftCol.getBoundingClientRect().top;
-    const bottomY = navItems[navItems.length - 1].getBoundingClientRect().bottom;
-    sidebar.style.height = (bottomY - topY) + "px";
+  if (sidebar) {
+    const leftCol = sidebar.previousElementSibling;
+    const navItems = leftCol.querySelectorAll("a.big");
+    if (navItems.length > 0) {
+      const topY = leftCol.getBoundingClientRect().top;
+      const bottomY =
+        navItems[navItems.length - 1].getBoundingClientRect().bottom;
+      sidebar.style.height = bottomY - topY + "px";
+    }
   }
 }
 
@@ -77,27 +91,29 @@ const CURSOR_ICONS = {
 function sectionContent(id) {
   if (id === "about") {
     return `
-    <div style="margin-top:20px;">
-      <div style="display:flex; gap:3px;">
-        <div class="img-wrap" style="margin-top:0; flex:1; aspect-ratio:4/5;"><img src="images/brewery.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;"></div>
-        <div class="img-wrap" style="margin-top:0; flex:1; aspect-ratio:4/5;"><img src="images/sunset.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center top; display:block;"></div>
+    <div style="margin-top:20px; width:75%;">
+      <div style="display:flex; gap:6px;">
+        <div class="img-wrap" style="margin-top:0; flex:1; aspect-ratio:4/5;"><img src="images/headshot.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center top; display:block;"></div>
         <div class="img-wrap" style="margin-top:0; flex:1; aspect-ratio:4/5;"><img src="images/sdfc.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;"></div>
+        <div class="img-wrap" style="margin-top:0; flex:1; aspect-ratio:4/5;"><img src="images/brewery.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;"></div>
       </div>
       <div class="body-copy" style="margin-top:28px;">
-        <p>I'm a software developer and data scientist currently based in San Diego, CA. My background spans iOS development, API engineering, and financial data analysis — with a focus on building clean, functional products from the ground up.</p>
-        <p style="margin-top:1.5em;">I studied Statistics and Data Science at <a href="https://www.ucsb.edu" target="_blank">UC Santa Barbara</a> and completed a Front End Software Development program at <a href="https://promineotech.com" target="_blank">Promineo Tech</a>. I've worked at <a href="https://www.shoppad.co" target="_blank">ShopPad</a>, <a href="https://www.yardi.com" target="_blank">Yardi</a>, and <a href="https://pensionmark.com" target="_blank">Pensionmark</a>, and I'm currently building iOS apps and REST APIs in my spare time.</p>
-        <p style="margin-top:1.5em;">I'm actively looking for software engineering opportunities — whether that's full-time or interesting freelance work in iOS, APIs, or fintech. My inbox is always open.</p>
-        <a href="mailto:danielfwhite1@gmail.com" class="say-hello-btn plain">Say Hello →</a>
+        <p>I'm Daniel, a customer success engineer and aspiring software developer based in San Diego, CA. I'm passionate about building things that sit at the intersection of AI and technology: clean REST APIs that power real-world apps, iOS experiences that feel native and fast, and tools that make markets a little more accessible.</p>
+        <p style="margin-top:1.5em;">I studied Statistics and Data Science at <a href="https://www.ucsb.edu" target="_blank">UC Santa Barbara</a> and completed a Front End Software Development program at <a href="https://promineotech.com" target="_blank">Promineo Tech</a>. After working at <a href="https://www.theshoppad.com" target="_blank">ShopPad</a>, <a href="https://www.yardi.com" target="_blank">Yardi</a>, and <a href="https://tesla.com" target="_blank">Tesla</a>, I now dedicate my spare time to building iOS apps and professionalwebsites.</p>
       </div>
     </div>`;
   }
 
   if (id === "contact") {
     return `
-    <div class="body-copy" style="margin-top:20px;">
-      <div style="margin-bottom:10px;"><a href="mailto:danielfwhite1@gmail.com" class="plain contact-link" data-cursor-type="email">${ICON_EMAIL}<span>Email</span></a></div>
-      <div style="margin-bottom:10px;"><a href="https://linkedin.com/in/danielfwhite/" target="_blank" class="plain contact-link" data-cursor-type="linkedin">${ICON_LINKEDIN}<span>LinkedIn</span></a></div>
-      <div><a href="https://github.com/danielfwhite1" target="_blank" class="plain contact-link" data-cursor-type="github">${ICON_GITHUB}<span>GitHub</span></a></div>
+    <div class="body-copy" style="margin-top:64px; width:75%;">
+      <p>I'm actively looking for software engineering opportunities. Whether that's full-time or interesting freelance work in iOS, APIs, or fintech. My inbox is always open.</p>
+      <a href="mailto:danielfwhite1@gmail.com" class="say-hello-btn plain">Say Hello →</a>
+      <div style="display:flex; gap:40px; align-items:center; margin-top:40px;">
+        <a href="mailto:danielfwhite1@gmail.com" class="plain contact-link" data-cursor-type="email">${ICON_EMAIL}<span>Email</span></a>
+        <a href="https://linkedin.com/in/danielfwhite/" target="_blank" class="plain contact-link" data-cursor-type="linkedin">${ICON_LINKEDIN}<span>LinkedIn</span></a>
+        <a href="https://github.com/danielfwhite1" target="_blank" class="plain contact-link" data-cursor-type="github">${ICON_GITHUB}<span>GitHub</span></a>
+      </div>
     </div>`;
   }
 
@@ -120,12 +136,14 @@ function sectionContent(id) {
       },
     ];
 
-    let wh = `<div style="margin-top:20px;">`;
+    let wh = `<div style="margin-top:64px; width:75%;">`;
     for (const p of projects) {
+      wh += `<div style="display:grid; grid-template-columns:1fr 28%; gap:16px; margin-bottom:28px;">`;
       wh += `<div>`;
       wh += `<div class="wk-title">${p.name}</div>`;
       wh += `<div class="wk-desc" style="white-space:pre-line;">${p.desc}</div>`;
-      wh += `<div style="margin-bottom:28px;"></div>`;
+      wh += `</div>`;
+      wh += `<div class="img-wrap" style="margin-top:0; overflow:hidden;"><img src="https://placehold.co/800x500/1a1a1a/2a2a2a" style="width:100%; height:100%; object-fit:cover; display:block;"></div>`;
       wh += `</div>`;
     }
     wh += `</div>`;
@@ -151,7 +169,7 @@ function sectionContent(id) {
       },
     ];
 
-    let wh = `<div style="margin-top:20px;">`;
+    let wh = `<div style="margin-top:64px;">`;
     for (const p of projects) {
       wh += `<div>`;
       wh += `<div class="wk-title">${p.name}</div>`;

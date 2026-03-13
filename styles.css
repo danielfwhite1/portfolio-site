@@ -244,6 +244,15 @@ a {
   color: #d4a853;
 }
 
+.wk-role {
+  font-size: 1.8vw;
+  letter-spacing: -0.5px;
+  color: #888;
+  font-weight: 300;
+  margin-top: 16px;
+  margin-bottom: 12px;
+}
+
 .wk-desc {
   font-size: 2.2vw;
   line-height: 1.4;
@@ -253,9 +262,33 @@ a {
   white-space: pre-line;
 }
 
+.wk-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.wk-bullets li {
+  font-size: 1.8vw;
+  line-height: 1.5;
+  letter-spacing: -0.5px;
+  color: #666;
+  font-weight: 300;
+  padding-left: 1.2em;
+  position: relative;
+  margin-bottom: 6px;
+}
+
+.wk-bullets li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: #444;
+}
+
 .wk-counter {
   font-size: 1.8vw;
-  color: #666;
+  color: #555;
   letter-spacing: -1px;
   margin-top: 8px;
   margin-bottom: 28px;
@@ -401,9 +434,27 @@ a {
 
 .project-row {
   display: grid;
-  grid-template-columns: 1fr 28%;
-  gap: 16px;
-  margin-bottom: 28px;
+  grid-template-columns: 1fr 30%;
+  gap: 12px;
+  margin-bottom: 56px;
+  align-items: stretch;
+}
+
+.project-row > div:first-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.project-row .wk-title {
+  font-size: 2.7vw;
+  letter-spacing: -2px;
+}
+
+.project-row .wk-desc {
+  font-size: 1.9vw;
+  flex: 1;
+  margin-top: 8px;
 }
 
 .project-row .img-wrap {
@@ -417,9 +468,29 @@ a {
   display: block;
 }
 
+.wk-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag {
+  font-size: 1.2vw;
+  letter-spacing: 0;
+  font-weight: 300;
+  color: #888;
+  border: 1px solid #333;
+  padding: 3px 10px;
+}
+
 /* ── Work section ── */
 .work-section {
   margin-top: 64px;
+}
+
+.wk-entry {
+  margin-bottom: 48px;
 }
 
 .wk-spacer {
@@ -460,8 +531,16 @@ a {
     font-size: 2vw;
   }
 
+  .wk-role {
+    font-size: 1.3vw;
+  }
+
   .wk-desc {
     font-size: 1.6vw;
+  }
+
+  .wk-bullets li {
+    font-size: 1.3vw;
   }
 
   .wk-counter {
@@ -489,6 +568,10 @@ a {
   .work-section,
   .contact-section {
     margin-top: 32px;
+  }
+
+  .tag {
+    font-size: 0.9vw;
   }
 
   .contact-links {
@@ -556,8 +639,20 @@ a {
     letter-spacing: -0.5px;
   }
 
+  .wk-role {
+    font-size: 3.2vw;
+  }
+
+  .wk-bullets li {
+    font-size: 3.2vw;
+  }
+
   .wk-counter {
     font-size: 3.5vw;
+  }
+
+  .tag {
+    font-size: 3vw;
   }
 
   .say-hello-btn {

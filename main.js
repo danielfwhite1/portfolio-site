@@ -164,6 +164,21 @@ function sectionContent(id) {
 
 draw();
 
+/* ─────────── Heatmap carousel ─────────── */
+const _heatmaps = [
+  { src: "images/curry-heatmap.png", label: "Steph Curry" },
+  { src: "images/harden-heatmap.png", label: "James Harden" },
+];
+let _heatmapIdx = 0;
+
+function cycleHeatmap() {
+  _heatmapIdx = (_heatmapIdx + 1) % _heatmaps.length;
+  const img = document.getElementById("heatmap-img");
+  const label = document.getElementById("heatmap-label");
+  if (img) img.src = _heatmaps[_heatmapIdx].src;
+  if (label) label.textContent = _heatmaps[_heatmapIdx].label;
+}
+
 /* ─────────── Custom cursor ─────────── */
 const dot = Object.assign(document.createElement("div"), {
   className: "cursor-dot",

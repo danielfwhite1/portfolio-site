@@ -1,3 +1,83 @@
+/* ─────────── Beams background animation ─────────── */
+(function () {
+  const canvas = document.getElementById("beams-bg");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const BEAM_COUNT = 30;
+  let beams = [];
+
+  function createBeam(w, h) {
+    return {
+      x: Math.random() * w * 1.5 - w * 0.25,
+      y: Math.random() * h * 1.5 - h * 0.25,
+      width: 30 + Math.random() * 60,
+      length: h * 2.5,
+      angle: -35 + Math.random() * 10,
+      speed: 0.6 + Math.random() * 1.2,
+      opacity: 0.06 + Math.random() * 0.08,
+      hue: 25 + Math.random() * 35,
+      pulse: Math.random() * Math.PI * 2,
+      pulseSpeed: 0.02 + Math.random() * 0.03,
+    };
+  }
+
+  function resetBeam(beam, index) {
+    const col = index % 3;
+    const spacing = window.innerWidth / 3;
+    beam.y = window.innerHeight + 100;
+    beam.x = col * spacing + spacing / 2 + (Math.random() - 0.5) * spacing * 0.5;
+    beam.width = 100 + Math.random() * 100;
+    beam.speed = 0.5 + Math.random() * 0.4;
+    beam.hue = 25 + (index * 35) / BEAM_COUNT;
+    beam.opacity = 0.06 + Math.random() * 0.07;
+  }
+
+  function drawBeam(beam) {
+    ctx.save();
+    ctx.translate(beam.x, beam.y);
+    ctx.rotate((beam.angle * Math.PI) / 180);
+    const op = beam.opacity * (0.8 + Math.sin(beam.pulse) * 0.2) * 0.7;
+    const g = ctx.createLinearGradient(0, 0, 0, beam.length);
+    g.addColorStop(0,   `hsla(${beam.hue},80%,60%,0)`);
+    g.addColorStop(0.1, `hsla(${beam.hue},80%,60%,${op * 0.5})`);
+    g.addColorStop(0.4, `hsla(${beam.hue},80%,60%,${op})`);
+    g.addColorStop(0.6, `hsla(${beam.hue},80%,60%,${op})`);
+    g.addColorStop(0.9, `hsla(${beam.hue},80%,60%,${op * 0.5})`);
+    g.addColorStop(1,   `hsla(${beam.hue},80%,60%,0)`);
+    ctx.fillStyle = g;
+    ctx.fillRect(-beam.width / 2, 0, beam.width, beam.length);
+    ctx.restore();
+  }
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+    ctx.scale(dpr, dpr);
+    beams = Array.from({ length: BEAM_COUNT }, () =>
+      createBeam(window.innerWidth, window.innerHeight)
+    );
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.filter = "blur(35px)";
+    beams.forEach((beam, i) => {
+      beam.y -= beam.speed;
+      beam.pulse += beam.pulseSpeed;
+      if (beam.y + beam.length < -100) resetBeam(beam, i);
+      drawBeam(beam);
+    });
+    requestAnimationFrame(animate);
+  }
+
+  resize();
+  window.addEventListener("resize", resize);
+  animate();
+})();
+
 /* ─────────── Navigation ─────────── */
 const ITEMS = ["about", "projects", "work", "contact"];
 const LABELS = {
@@ -31,7 +111,7 @@ function go(id) {
 function draw() {
   let left = "";
 
-  left += `<span class="site-name">Daniel White</span>`;
+  left += `<a href="#" class="site-name plain" onclick="go(null);return false;">Daniel White</a>`;
   left += `<span class="site-name site-subtitle">Software Developer</span>`;
   left += `<div class="nav-gap"></div>`;
 
@@ -55,15 +135,9 @@ function draw() {
     }
   }
 
-  const sidebarHTML =
-    current === null
-      ? `<div id="sidebar-img"><img src="images/sunset.jpg"></div>`
-      : "";
-
   const h = `
     <div class="layout">
       <div class="layout-left">${left}</div>
-      ${sidebarHTML}
     </div>`;
 
   const pageEl = document.getElementById("page");
@@ -85,72 +159,6 @@ const CURSOR_ICONS = {
 function sectionContent(id) {
   const tmpl = document.getElementById(`section-${id}`);
   if (tmpl) return tmpl.innerHTML;
-
-  if (id === "projects") {
-    const projects = [
-      {
-        name: "Market Pulse",
-        desc: "SwiftUI iOS stock tracker with real-time\nquotes, portfolio performance, market\nnews, and push notifications",
-      },
-      {
-        name: "Finance API",
-        desc: "Python/Flask REST API aggregating financial\ndata sources with rate-limiting, caching,\nand Swagger documentation",
-      },
-      {
-        name: "Campus Event",
-        desc: "Native iOS app for event discovery with\nNode.js backend, WebSockets, geolocation,\nand push notifications",
-      },
-    ];
-
-    let wh = `<div class="projects-section">`;
-    for (const p of projects) {
-      wh += `<div class="project-row">`;
-      wh += `<div>`;
-      wh += `<div class="wk-title">${p.name}</div>`;
-      wh += `<div class="wk-desc">${p.desc}</div>`;
-      wh += `</div>`;
-      wh += `<div class="img-wrap"><img src="https://placehold.co/800x500/1a1a1a/2a2a2a"></div>`;
-      wh += `</div>`;
-    }
-    wh += `</div>`;
-    return wh;
-  }
-
-  if (id === "work") {
-    const entries = [
-      {
-        name: "ShopPad",
-        desc: "Customer Success Engineer resolving\ntechnical issues for Shopify merchants,\nreviewing code and developing SOPs",
-        counter: "2021–Present",
-      },
-      {
-        name: "Yardi",
-        desc: "Technical Account Manager leading\nproduct implementation, client onboarding,\nand enterprise software testing",
-        counter: "2020–2021",
-      },
-      {
-        name: "Pensionmark",
-        desc: "Investment Operations Intern maintaining\n500+ investment plans and generating\nportfolio analysis reports",
-        counter: "2019–2020",
-      },
-    ];
-
-    let wh = `<div class="work-section">`;
-    for (const e of entries) {
-      wh += `<div>`;
-      wh += `<div class="wk-title">${e.name}</div>`;
-      wh += `<div class="wk-desc">${e.desc}</div>`;
-      if (e.counter) {
-        wh += `<div class="wk-counter">${e.counter}</div>`;
-      } else {
-        wh += `<div class="wk-spacer"></div>`;
-      }
-      wh += `</div>`;
-    }
-    wh += `</div>`;
-    return wh;
-  }
-
   return "";
 }
 
@@ -179,8 +187,8 @@ document.addEventListener("mousemove", (e) => {
 });
 
 (function tick() {
-  rx += (mx - rx) * 0.18;
-  ry += (my - ry) * 0.18;
+  rx += (mx - rx) * 0.35;
+  ry += (my - ry) * 0.35;
   dot.style.cssText += `left:${mx}px;top:${my}px;`;
   ring.style.cssText += `left:${rx}px;top:${ry}px;`;
   iconEl.style.cssText += `left:${mx}px;top:${my}px;`;
